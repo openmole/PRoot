@@ -24,7 +24,7 @@ archive_no_bin=$(basename "${archive}" .bin)
 
 function unarchive() {
   dd if="${archive}" of="${archive_no_bin}" bs=1 skip="${extracting_program_size}" count="${archive_size}"
-  tar zcf "${archive_no_bin}"
+  tar zxf "${archive_no_bin}"
 }
 
 function archive() {
