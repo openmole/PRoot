@@ -14,7 +14,7 @@
 archive="$1"
 mode="$2"
 
-archive_size=$(printf "%d" "0x$(tail -c 8 "${archive}" | hexdump -e '16/1 "%02X"' | tr -s '0' | tr -s ' ' )")
+archive_size=$(printf "%d" "0x$(tail -c 8 "${archive}" | hexdump -e '16/1 "%02X"' | cut -d ' ' -f1)")
 
 file_size=$(stat -c %s "${archive}")
 footer_size=21
@@ -24,7 +24,7 @@ archive_no_bin=$(basename "${archive}" .bin)
 
 function unarchive() {
   dd if="${archive}" of="${archive_no_bin}" bs=1 skip="${extracting_program_size}" count="${archive_size}"
-  tar ztf "${archive_no_bin}"
+  tar zcf "${archive_no_bin}"
 }
 
 function archive() {
