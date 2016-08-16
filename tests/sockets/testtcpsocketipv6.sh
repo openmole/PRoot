@@ -5,7 +5,7 @@
 # $3: waiting time before client connecting
 # $4: client waiting time before sending message
 start_ips_program() {
-    ../../src/proot -v 2 -p $1 python tcpsockets.py $2 $3 $4 $1
+    ../../src/proot -p $1 python tcpsocketsipv6.py $2 $3 $4 $1
 }
 
 #  Instance 1:  bind                         connect send&close
