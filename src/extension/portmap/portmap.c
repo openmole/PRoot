@@ -232,7 +232,7 @@ int prepare_getsockname_chained_syscall(Tracee *tracee, Config *config) {
     sock_addr = alloc_mem(tracee, sizeof(sockaddr));
     if (sock_addr == 0)
         return -EFAULT;
-    size_addr = alloc_mem(tracee, sizeof(sockaddr));
+    size_addr = alloc_mem(tracee, sizeof(socklen_t));
     if(size_addr == 0)
         return -EFAULT;
 
@@ -419,7 +419,7 @@ static int handle_syschained_exit(Tracee *tracee, Config *config)
 static FilteredSysnum filtered_sysnums[] = {
 	{ PR_bind,		     0 },
 	{ PR_connect,		 0 },
-    { PR_listen,         FILTER_SYSEXIT },
+    { PR_listen,         FILTER_SYSEXIT },  /* the exit stage is required to chain syscalls */
 //  { PR_getsockname,    FILTER_SYSEXIT },  /* not needed here, see CHAINED EXIT event */
 	FILTERED_SYSNUM_END,
 };
