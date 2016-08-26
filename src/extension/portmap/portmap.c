@@ -164,7 +164,7 @@ int change_inet_socket_port(Tracee *tracee, Config *config, struct sockaddr_in *
 
     if(port_out == PORTMAP_DEFAULT_VALUE) {
         if (bind_mode && config->netcoop_mode && !config->need_to_check_new_port && valid_port_to_change(port_in)) {
-            VERBOSE(tracee, PORTMAP_VERBOSITY, "ipv4 autoport mode with: %d", htons(port_in));
+            VERBOSE(tracee, PORTMAP_VERBOSITY, "ipv4 netcoop mode with: %d", htons(port_in));
             sockaddr->sin_port = 0; // the system will assign an available port
             config->old_port = port_in; // we keep this one for adding a new entry
             config->need_to_check_new_port = true;
@@ -194,7 +194,7 @@ int change_inet6_socket_port(Tracee *tracee, Config *config, struct sockaddr_in6
 
     if(port_out == PORTMAP_DEFAULT_VALUE) {
         if (bind_mode && config->netcoop_mode && !config->need_to_check_new_port && valid_port_to_change(port_in)) {
-            VERBOSE(tracee, PORTMAP_VERBOSITY, "ipv6 autoport mode with: %d", htons(port_in));
+            VERBOSE(tracee, PORTMAP_VERBOSITY, "ipv6 netcoop mode with: %d", htons(port_in));
             sockaddr->sin6_port = 0; // the system will assign an available port
             config->old_port = port_in; // we keep this one for adding a new entry
             config->need_to_check_new_port = true;
@@ -258,9 +258,9 @@ int prepare_getsockname_chained_syscall(Tracee *tracee, Config *config) {
     );
     if (status < 0)
         return status;
-    status = restart_original_syscall(tracee);
-    if (status < 0)
-        return status;
+    //status = restart_original_syscall(tracee);
+    //if (status < 0)
+    //    return status;
 
     sockfd = peek_reg(tracee, CURRENT, SYSARG_1);
     return 0;
@@ -359,9 +359,6 @@ int add_changed_port_as_entry(Tracee *tracee, Config *config) {
     if(!config->need_to_check_new_port)
         return 0;
 
-    /* Get the reg address of the socket, and the size of the structure.
-     * Note that the sockaddr and addrlen are at the same position for all 4 of these syscalls.
-     */
     sockfd = peek_reg(tracee, CURRENT, SYSARG_1);
     sock_addr = peek_reg(tracee, CURRENT, SYSARG_2);
     result = peek_reg(tracee, CURRENT, SYSARG_RESULT);
@@ -418,12 +415,12 @@ static int handle_syschained_exit(Tracee *tracee, Config *config)
     }
 }
 
-/* List of syscalls handled by this extensions.  */
+/* List of syscalls handled by this extension.  */
 static FilteredSysnum filtered_sysnums[] = {
-	{ PR_bind,		     0 },               /* we don't need the exit stage for bind() */
-	{ PR_connect,		 0 },               /* we don't need the exit stage for connect() */
-    { PR_listen,         FILTER_SYSEXIT },  /* we need the exit stage for listen() to get the new port for the autoport mode */
-    { PR_getsockname,         FILTER_SYSEXIT },  /* we need the exit stage for listen() to get the new port for the autoport mode */
+	{ PR_bind,		     0 },
+	{ PR_connect,		 0 },
+    { PR_listen,         FILTER_SYSEXIT },
+//  { PR_getsockname,    FILTER_SYSEXIT },  /* not needed here, see CHAINED EXIT event */
 	FILTERED_SYSNUM_END,
 };
 
