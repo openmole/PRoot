@@ -240,7 +240,7 @@ Copyright (C) 2014 STMicroelectronics, licensed under GPL v2 or later.",
 		{ .name = "--netcoop", .separator = '\0', .value = NULL },
 		{ .name = NULL, .separator = '\0', .value = NULL } },
 	  .handler = handle_option_n,
-	  .description = "Activates the network cooperation mode.",
+	  .description = "Enable the network cooperation mode.",
 	  .detail = "\tThis option makes PRoot intercept bind() system calls and\n\
 \tchange the port they are binding to to 0. With this, the system will\n\
 \tallocate an available port. Each time this is done, a new entry is added\n\
