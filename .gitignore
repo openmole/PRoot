@@ -1,0 +1,12 @@
+*.o
+*.d
+
+src/.check_process_vm.res
+src/.check_seccomp_filter.res
+src/build.h
+src/care
+src/care-160414170003.bin
+src/loader/loader
+src/loader/loader-m32
+src/proot
+
