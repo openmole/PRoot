@@ -308,16 +308,16 @@ static int set_seccomp_filters(const FilteredSysnum *sysnums)
 	if (status < 0)
 		goto end;
 
-	status = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-	if (status < 0)
-		goto end;
-
 	/* To output this BPF program for debug purpose:
 	 *
 	 *     write(2, program.filter, program.len * sizeof(struct sock_filter));
 	 */
 
 	status = prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, &program);
+	if (status < 0)
+		goto end;
+
+	status = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
 	if (status < 0)
 		goto end;
 
