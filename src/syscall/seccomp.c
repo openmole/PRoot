@@ -334,7 +334,7 @@ static FilteredSysnum proot_sysnums[] = {
 	{ PR_access,		0 },
 	{ PR_acct,		0 },
 	{ PR_bind,		0 },
-	{ PR_brk,		FILTER_SYSEXIT },
+	{ PR_brk,		0 },
 	{ PR_chdir,		FILTER_SYSEXIT },
 	{ PR_chmod,		0 },
 	{ PR_chown,		0 },
@@ -342,7 +342,7 @@ static FilteredSysnum proot_sysnums[] = {
 	{ PR_chroot,		0 },
 	{ PR_connect,		0 },
 	{ PR_creat,		0 },
-	{ PR_execve,		FILTER_SYSEXIT },
+	{ PR_execve,		0 },
 	{ PR_faccessat,		0 },
 	{ PR_fchdir,		FILTER_SYSEXIT },
 	{ PR_fchmodat,		0 },
@@ -409,6 +409,7 @@ static FilteredSysnum proot_sysnums[] = {
 	{ PR_waitpid,		FILTER_SYSEXIT },
 	FILTERED_SYSNUM_END,
 };
+
 
 /**
  * Add the @new_sysnums to the list of filtered @sysnums, using the
